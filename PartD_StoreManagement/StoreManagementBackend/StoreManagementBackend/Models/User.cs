@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace StoreManagementBackend.Models
 {
@@ -13,8 +14,12 @@ namespace StoreManagementBackend.Models
         [Required, MaxLength(20)]
         public string Password { get; set; }
 
-        [Required]
-        public Role Role { get; set; }
+        /*[Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public Role Role { get; set; }*/
+        [Required, MaxLength(20)]
+        [RegularExpression("Admin|Supplier")]
+        public string Role { get; set; }
 
         [Required, MaxLength(50)]
         public string CompanyName { get; set; }
