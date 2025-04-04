@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ybTT1DR67rDA8K0Ba75CuVosVkc4KQeSlZdNQm93NE8=",
+  "Source": "StoreManagementBackend",
+  "BasePath": "_content/StoreManagementBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
