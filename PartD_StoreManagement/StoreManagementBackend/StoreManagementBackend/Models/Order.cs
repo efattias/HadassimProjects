@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace StoreManagementBackend.Models
 {
@@ -12,7 +13,8 @@ namespace StoreManagementBackend.Models
         public int SupplierId { get; set; }
 
         [ForeignKey("SupplierId")]
-        public User Supplier { get; set; }
+        [JsonIgnore]
+        public User? Supplier { get; set; }
 
         [Required]
         public DateTime InvitedDate { get; set; } = DateTime.Now;
@@ -22,8 +24,11 @@ namespace StoreManagementBackend.Models
         public DateTime? CompleteDate { get; set; }
 
         [Required]
+        [Column(TypeName = "nvarchar(15)")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status Status { get; set; }
 
+        [JsonIgnore]
         public ICollection<OrderItem>? OrderItems { get; set; }
     }
 }

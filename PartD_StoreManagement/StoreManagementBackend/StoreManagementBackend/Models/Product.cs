@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace StoreManagementBackend.Models
 {
@@ -23,9 +24,11 @@ namespace StoreManagementBackend.Models
         [Required]
         public int SupplierId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("SupplierId")]
-        public User Supplier { get; set; }
+        public User? Supplier { get; set; }
 
+        [JsonIgnore]
         public ICollection<OrderItem>? OrderItems { get; set; }
     }
 }

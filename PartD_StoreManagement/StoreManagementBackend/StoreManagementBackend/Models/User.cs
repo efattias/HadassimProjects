@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace StoreManagementBackend.Models
@@ -14,12 +16,15 @@ namespace StoreManagementBackend.Models
         [Required, MaxLength(20)]
         public string Password { get; set; }
 
-        /*[Required]
+        [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Role Role { get; set; }*/
-        [Required, MaxLength(20)]
-        [RegularExpression("Admin|Supplier")]
-        public string Role { get; set; }
+
+
+        [Column(TypeName = "nvarchar(20)")]
+        public Role Role { get; set; }
+        /*[Required, MaxLength(20)]
+        [RegularExpression("Admin|Supplier")]*/
+        //public string Role { get; set; }
 
         [Required, MaxLength(50)]
         public string CompanyName { get; set; }
@@ -30,7 +35,10 @@ namespace StoreManagementBackend.Models
         [Required, MaxLength(20)]
         public string RepresentativeName { get; set; }
 
+        [JsonIgnore]
         public ICollection<Product>? Products { get; set; }
+
+        [JsonIgnore]
         public ICollection<Order>? Orders { get; set; }
     }
 }

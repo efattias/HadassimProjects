@@ -15,10 +15,22 @@ namespace StoreManagementBackend.Controllers
             _context = context;
         }
 
+        //get product
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _context.Products.ToListAsync();
+        }
+
+        //post product
+        [HttpPost]
+        public async Task<ActionResult<Product>> PostProduct([FromBody] Product product)
+        {
+            product.Supplier = await _context.Users.FirstOrDefaultAsync(u => u.Id == product.SupplierId && u.Role == Role.Supplier);
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProducts", new { product.Id }, product);
         }
     }
 }
