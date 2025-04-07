@@ -1,18 +1,23 @@
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 from datetime import datetime
-from UserModel import UserModel
-from OrderItemModel import OrderItemModel
+from dateutil.parser import parse
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Models import UserModel
+from Models.UserModel import UserModel
+from Models.OrderItemModel import OrderItemModel
 
 @dataclass
 class OrderModel:
     id: int
     supplier_id: int
-    supplier: Optional['UserModel'] = None  
-    invited_date: datetime = datetime.now()
+    status: str
+    invited_date: datetime = datetime.now()  
     approval_date: Optional[datetime] = None
     complete_date: Optional[datetime] = None
-    status: str  
+    supplier: Optional['UserModel'] = None  
     order_items: Optional[List['OrderItemModel']] = None  
 
     @classmethod
@@ -22,7 +27,7 @@ class OrderModel:
             supplier_id=jsonData.get('supplierId'),
             supplier=jsonData.get('supplier'),  
             invited_date=datetime.fromisoformat(jsonData.get('invitedDate')) if jsonData.get('invitedDate') else datetime.now(),
-            approval_date=datetime.fromisoformat(jsonData.get('approvalDate')) if jsonData.get('approvalDate') else None,
+            approval_date=parse(jsonData.get('approvalDate')) if jsonData.get('approvalDate') else None,
             complete_date=datetime.fromisoformat(jsonData.get('completeDate')) if jsonData.get('completeDate') else None,
             status=jsonData.get('status'),  
             order_items=jsonData.get('orderItems', []),  

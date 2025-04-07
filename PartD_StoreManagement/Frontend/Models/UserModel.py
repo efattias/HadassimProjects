@@ -1,12 +1,12 @@
 from typing import Dict, Any, List, Optional
-from RoleModel import Role
+from Models.RoleModel import RoleModel
 
 class UserModel:
     def __init__(self, 
                  id: int, 
                  username: str, 
                  password: str, 
-                 role: Role, 
+                 role: RoleModel, 
                  company_name: str, 
                  phone_number: str, 
                  representative_name: str, 
@@ -24,7 +24,7 @@ class UserModel:
 
     @classmethod
     def from_json(cls, jsonData: Dict[str, Any]) -> 'UserModel':
-        role = Role[jsonData.get('role')]
+        role = RoleModel[jsonData.get('role')]
         return cls(
             id=jsonData.get('id'),
             username=jsonData.get('username'),
@@ -49,3 +49,11 @@ class UserModel:
             'products': self.products,  
             'orders': self.orders,  
         }
+    
+    def __str__(self):
+        return (
+            f"UserModel(id={self.id}, username='{self.username}', role='{self.role.name}', "
+            f"company_name='{self.company_name}', phone_number='{self.phone_number}', "
+            f"representative_name='{self.representative_name}', "
+            f"products={self.products}, orders={self.orders})"
+        )

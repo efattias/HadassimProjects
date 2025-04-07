@@ -1,7 +1,8 @@
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, TYPE_CHECKING
 from dataclasses import dataclass
-from UserModel import UserModel
-from OrderItemModel import OrderItemModel
+from Models.UserModel import UserModel
+if TYPE_CHECKING:
+    from Models.OrderItemModel import OrderItemModel
 
 @dataclass
 class ProductModel:
