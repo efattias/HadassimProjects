@@ -14,14 +14,14 @@ namespace StoreManagementBackend.Models
 
         [ForeignKey("OrderId")]
         [JsonIgnore]
-        public Order Order { get; set; }
+        public Order? Order { get; set; }
 
         [Required]
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         [JsonIgnore]
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
 
         [Required]
         public int Quantity { get; set; }

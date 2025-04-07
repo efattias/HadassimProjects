@@ -6,12 +6,10 @@ namespace StoreManagementBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
-    {
+    public class UserController : ControllerBase {
         private readonly StoreManagementDbContext _context;
 
-        public UserController(StoreManagementDbContext context)
-        {
+        public UserController(StoreManagementDbContext context) {
             _context = context;
         }
 
@@ -24,12 +22,10 @@ namespace StoreManagementBackend.Controllers
 
         //get user by id: 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
-        {
+        public async Task<ActionResult<User>> GetUserById(int id) {
             var user = await _context.Users.FindAsync(id);
 
-            if (user == null)
-            {
+            if (user == null) {
                 return NotFound("User not found.");
             }
 
@@ -38,8 +34,7 @@ namespace StoreManagementBackend.Controllers
 
         //post user
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
-        {
+        public async Task<ActionResult<User>> PostUser([FromBody] User user) {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
