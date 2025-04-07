@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QTableWidget, QHeaderView, QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
+from Controllers.OrderController import OrderController
 from Models.StoreManagementBackendConnectModel import Store_management_instance
 
 class HomePage(QWidget):
@@ -23,14 +24,15 @@ class HomePage(QWidget):
             self.table.setRowCount(0)
         else:
             self.table = QTableWidget()
-            self.table.setColumnCount(6)
-            self.table.setHorizontalHeaderLabels(["ID", "invited_date", "approval_date", "complete_date", "status", "order_items"])
+            self.table.setColumnCount(5)
+            self.table.setHorizontalHeaderLabels(["ID", "invited_date", "approval_date", "complete_date", "status"])
             self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-            self.layout.addWidget(self.table)  # 🟢 הוספה לפריסת המסך
+            self.layout.addWidget(self.table)  
 
         orders = Store_management_instance.Orders
         for order in orders:
-            self.add_order_row(order)
+            if(order.supplier_id == self.user.id):
+                self.add_order_row(order)
     
     def add_order_row(self, order):
         row_position = self.table.rowCount()
@@ -41,9 +43,9 @@ class HomePage(QWidget):
         self.table.setItem(row_position, 2, QTableWidgetItem(order.approval_date.strftime('%Y-%m-%d %H:%M') if order.approval_date else "Not approved"))
         self.table.setItem(row_position, 3, QTableWidgetItem(order.complete_date.strftime('%Y-%m-%d %H:%M') if order.complete_date else "Not completed"))
         
-        # כפתור סטטוס
         status_button = QPushButton(order.status)
-        status_button.clicked.connect(lambda checked=False, o=order: self.update_status(o))  # שימוש נכון ב־lambda
+        status_button.setEnabled(order.status == "Invited")
+        status_button.clicked.connect(lambda checked=False, o=order, b=status_button: self.update_status(o, b))
 
         status_widget = QWidget()
         status_layout = QHBoxLayout(status_widget)
@@ -52,16 +54,12 @@ class HomePage(QWidget):
         status_layout.setAlignment(Qt.AlignCenter)
         self.table.setCellWidget(row_position, 4, status_widget)
 
-        if order.order_items:
-            items_text = "\n".join([f"{item.product_name} x{item.quantity}" for item in order.order_items])
-        else:
-            items_text = "No items"
-        
-        item_widget = QTableWidgetItem(items_text)
-        item_widget.setTextAlignment(Qt.AlignTop | Qt.AlignLeft) 
-        self.table.setItem(row_position, 5, item_widget)
-
         self.table.resizeRowsToContents()
 
-    def update_status(self, order):
-        print(f"Status button clicked for order ID: {order.id}")
+    def update_status(self, order, button):
+        new_status = "Approval"
+        result = OrderController.updateOrderStatus(order.id, new_status)
+        if "ERROR" not in str(result):  
+            order.status = new_status
+            button.setText(new_status)
+            button.setEnabled(False)
