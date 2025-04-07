@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLab
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 from Home_page_admin import HomePage 
+from Home_page_supplier import HomePage
 from Models.StoreManagementBackendConnectModel import Store_management_instance
 from Models.RoleModel import RoleModel
 
