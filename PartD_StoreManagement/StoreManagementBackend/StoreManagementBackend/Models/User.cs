@@ -18,13 +18,8 @@ namespace StoreManagementBackend.Models
 
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-
-
         [Column(TypeName = "nvarchar(20)")]
         public Role Role { get; set; }
-        /*[Required, MaxLength(20)]
-        [RegularExpression("Admin|Supplier")]*/
-        //public string Role { get; set; }
 
         [Required, MaxLength(50)]
         public string CompanyName { get; set; }
