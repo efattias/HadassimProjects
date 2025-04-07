@@ -1,0 +1,7 @@
+# Ignore .NET build files
+**/obj/
+**/bin/
+
+
+.venv/
+obj/
