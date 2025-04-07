@@ -18,7 +18,6 @@ def main():
     login_window = LoginWindow()
     login_window.showMaximized()
 
-    # הפעלת האפליקציה
     sys.exit(app.exec())
 
 

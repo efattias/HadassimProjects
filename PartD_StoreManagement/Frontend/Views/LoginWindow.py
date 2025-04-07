@@ -4,8 +4,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QSpacerItem, QSizePolicy, QMessageBox
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
-from Home_page_admin import HomePage 
-from Home_page_supplier import HomePage
+from Home_page_admin import Home_page_admin 
+from Home_page_supplier import Home_page_supplier
 from Models.StoreManagementBackendConnectModel import Store_management_instance
 from Models.RoleModel import RoleModel
 
@@ -29,7 +29,6 @@ class LoginWindow(QWidget):
         self.username_input.setPlaceholderText("Enter your username")
         self.username_input.setFixedSize(350, 40)
 
-        # סיסמה
         password_label = QLabel("Password:")
         password_label.setFont(font)
         self.password_input = QLineEdit()
@@ -60,11 +59,11 @@ class LoginWindow(QWidget):
             if user.username == username and user.password == password:
                 QMessageBox.information(self, "Login Success", f"Welcome, {username}!")
                 if user.role == RoleModel.Admin:
-                    self.home_page_admin = HomePage(user)
+                    self.home_page_admin = Home_page_admin(user)
                     self.home_page_admin.showMaximized()
                     self.close()
                 if user.role == RoleModel.Supplier:
-                    self.home_page_supplier = HomePage(user)
+                    self.home_page_supplier = Home_page_supplier(user)
                     self.home_page_supplier.showMaximized()
                     self.close()
                 return

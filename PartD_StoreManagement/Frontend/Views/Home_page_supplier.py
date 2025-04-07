@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from Controllers.OrderController import OrderController
 from Models.StoreManagementBackendConnectModel import Store_management_instance
 
-class HomePage(QWidget):
+class Home_page_supplier(QWidget):
     def __init__(self, user):
         super().__init__()
         self.user = user 
@@ -12,7 +12,6 @@ class HomePage(QWidget):
     def init_ui(self):
         self.setWindowTitle("Supplier Home Page - Store Management")
 
-        # פריסת מסך
         self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
 
