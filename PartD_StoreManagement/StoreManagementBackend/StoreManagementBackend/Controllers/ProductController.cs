@@ -28,5 +28,20 @@ namespace StoreManagementBackend.Controllers
 
             return CreatedAtAction("GetProducts", new { product.Id }, product);
         }
+
+        //post product
+        [HttpPost("UpdateInStock/{id}")]
+        public async Task<ActionResult<Product>> PostProductInStock(int id, int addToStock) {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) {
+                return NotFound(new { message = $"Product with ID {id} not found." });
+            }
+
+            product.InStock +=addToStock;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Product {id} updated to inTtock by '{addToStock}'." });
+        }
     }
 }
