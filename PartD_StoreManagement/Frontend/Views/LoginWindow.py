@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QSpacerItem, QSizePolicy, QMessageBox
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
-from HomePage import HomePage 
+from Home_page_admin import HomePage 
 from Models.StoreManagementBackendConnectModel import Store_management_instance
+from Models.RoleModel import RoleModel
 
 
 class LoginWindow(QWidget):
@@ -54,9 +58,14 @@ class LoginWindow(QWidget):
         for user in Store_management_instance.Users:
             if user.username == username and user.password == password:
                 QMessageBox.information(self, "Login Success", f"Welcome, {username}!")
-                self.home_page = HomePage(user)
-                self.home_page.showMaximized()
-                self.close()
+                if user.role == RoleModel.Admin:
+                    self.home_page_admin = HomePage(user)
+                    self.home_page_admin.showMaximized()
+                    self.close()
+                if user.role == RoleModel.Supplier:
+                    self.home_page_supplier = HomePage(user)
+                    self.home_page_supplier.showMaximized()
+                    self.close()
                 return
 
         QMessageBox.warning(self, "Login Failed", "Username or password is incorrect.")
