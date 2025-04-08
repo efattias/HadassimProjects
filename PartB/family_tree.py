@@ -41,10 +41,22 @@ def build_tree(persons):
 
     return family_tree
 
+def complete_spouses(persons):
+    id_to_person = {p["Person_Id"]: p for p in persons} # get all the ID
+    for person in persons:
+        spouse_id = person.get("Spouse_Id")
+        if spouse_id: # if the person have spouse
+            spouse = id_to_person.get(spouse_id) # find the spouse person
+            if spouse and spouse.get("Spouse_Id") != person["Person_Id"]: # if he is miss ing a spouse
+                spouse["Spouse_Id"] = person["Person_Id"] #add his spouse
+
+
 def main():
+    complete_spouses(persons)
     tree = build_tree(persons) 
     for row in tree: # print tree
         print(row)
+    
 
 if __name__ == "__main__":
     main()
