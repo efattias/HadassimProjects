@@ -12,9 +12,20 @@ def main():
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor('#FFFFFF')) 
     palette.setColor(QPalette.WindowText, QColor('#000000'))
-    palette.setColor(QPalette.Button, QColor('#da0000')) 
-    palette.setColor(QPalette.ButtonText, QColor('#FFFFFF')) 
+    palette.setColor(QPalette.Button, QColor('#D0E4F5')) 
+    palette.setColor(QPalette.ButtonText, QColor('#000000')) 
     app.setPalette(palette)
+    app.setStyleSheet("""
+    QTableWidget::horizontalHeader {
+        color: black;
+        background-color: #D0E4F5; 
+        font-weight: bold;
+    }
+    QHeaderView::section {
+        padding: 4px;
+        border: 1px solid #A0A0A0;
+    }
+""")
     login_window = LoginWindow()
     login_window.showMaximized()
 

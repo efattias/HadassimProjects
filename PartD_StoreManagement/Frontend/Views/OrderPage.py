@@ -48,7 +48,7 @@ class OrderPage(QWidget):
             self.products_table.setItem(row, 5, QTableWidgetItem(str(product.supplier_id)))
 
             spin_box = QSpinBox()
-            spin_box.setRange(0, 100)
+            spin_box.setRange(0, 10000)
             spin_box.valueChanged.connect(lambda value, pid=product.id: self.selected_quantities.__setitem__(pid, value))
             self.products_table.setCellWidget(row, 6, spin_box)
 
