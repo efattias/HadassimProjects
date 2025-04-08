@@ -3,28 +3,44 @@ from datetime import datetime
 from collections import defaultdict
 import os
 import csv
+import pandas as pd
 
 valid_data = []
 seen_rows = set()
 
 def time_average(path): # check row format
-    wb = load_workbook(path)
-    ws = wb.active
-    
-    for row in ws.iter_rows(min_row=2, values_only=True): # for each row chack the condition and add to seen_rows
-        timestamp = str(row[0]).strip()
-        value = str(row[1]).strip()
+    if path.endswith(".xlsx"):
+        wb = load_workbook(path)
+        ws = wb.active
+        
+        for row in ws.iter_rows(min_row=2, values_only=True): # for each row chack the condition and add to seen_rows
+            timestamp = str(row[0]).strip()
+            value = str(row[1]).strip()
 
-        if not is_valid_timestamp(timestamp): #check the date format
-            continue
-        if not is_valid_value(value): # check if the value exsist and dont null
-            continue
-        if (timestamp, value) in seen_rows: # chack if row already exist
-            continue
+            if not is_valid_timestamp(timestamp): #check the date format
+                continue
+            if not is_valid_value(value): # check if the value exsist and dont null
+                continue
+            if (timestamp, value) in seen_rows: # chack if row already exist
+                continue
 
-        seen_rows.add((timestamp, value)) # if the row good- add to seen_rows
-        valid_data.append((datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S"), float(value))) # all the exist date
-    
+            seen_rows.add((timestamp, value)) # if the row good- add to seen_rows
+            valid_data.append((datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S"), float(value))) # all the exist date
+    elif path.endswith(".parquet"):
+        df = pd.read_parquet(path)
+        for _, row in df.iterrows():
+            timestamp = str(row["timestamp"]).strip()
+            value = str(row["mean_value"]).strip()
+
+            if not is_valid_timestamp(timestamp):
+                continue
+            if not is_valid_value(value):
+                continue
+            if (timestamp, value) in seen_rows:
+                continue
+
+            seen_rows.add((timestamp, value))
+            valid_data.append((datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S"), float(value)))
 
 def is_valid_timestamp(ts): #check the date format
     try:
@@ -100,6 +116,7 @@ def process_all_chunks_and_save_final(): #read all the chunk files and create th
 
             daily_avg = compute_hourly_averages_from_data(daily_valid) # calculate the average for each file
             final_results.extend(daily_avg)
+    save_data_as_parquet(final_results, r"PartA\final_hourly_avg.parquet")
 
     with open(r"PartA\final_hourly_avg.csv", "w", newline='') as f:
         writer = csv.writer(f)
@@ -109,9 +126,15 @@ def process_all_chunks_and_save_final(): #read all the chunk files and create th
 
     print("file final_hourly_avg.csv create successfully.")
 
+def save_data_as_parquet(data, filename):  # Save data in Parquet format
+    df = pd.DataFrame(data, columns=["Timestamp", "Average"])
+    df["Timestamp"] = pd.to_datetime(df["Timestamp"])
+    df.to_parquet(filename, index=False)
+    print(f"Data saved to {filename} in Parquet format.")
 
 def main():
-    time_average(r"PartA\time_series.xlsx")
+    #time_average(r"PartA\time_series.xlsx")
+    time_average(r"PartA\time_series.parquet")
     compute_hourly_averages()
     daily_data = split_data_by_day()
     save_daily_files(daily_data)
