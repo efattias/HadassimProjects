@@ -57,3 +57,14 @@ class UserModel:
             f"representative_name='{self.representative_name}', "
             f"products={self.products}, orders={self.orders})"
         )
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "password": self.password,
+            "role": self.role.name if hasattr(self.role, "name") else self.role,
+            "companyName": self.company_name,
+            "phoneNumber": self.phone_number,
+            "representativeName": self.representative_name
+        }

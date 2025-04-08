@@ -14,7 +14,7 @@ class UserController:
     @staticmethod
     def postUser(newUser):
         try:
-            response = requests.post(UserController.API_URL, json=newUser, verify=False)
+            response = requests.post(UserController.API_URL, json=newUser.to_dict(), verify=False)
             response.raise_for_status()
             print(f"User added successfully: {response.json()}")
             return response.json()

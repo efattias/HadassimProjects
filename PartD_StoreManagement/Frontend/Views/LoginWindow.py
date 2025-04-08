@@ -8,6 +8,7 @@ from Home_page_admin import Home_page_admin
 from Home_page_supplier import Home_page_supplier
 from Models.StoreManagementBackendConnectModel import Store_management_instance
 from Models.RoleModel import RoleModel
+from RegisterWindow import RegisterWindow
 
 
 class LoginWindow(QWidget):
@@ -41,15 +42,21 @@ class LoginWindow(QWidget):
         login_button.setFixedSize(350, 50)
         login_button.clicked.connect(self.login_func)
 
+        register_button = QPushButton("Register")
+        register_button.setFixedSize(350, 40)
+        register_button.clicked.connect(self.open_register_window)
+
         layout.addWidget(username_label, alignment=Qt.AlignCenter)
         layout.addWidget(self.username_input, alignment=Qt.AlignCenter)
         layout.addWidget(password_label, alignment=Qt.AlignCenter)
         layout.addWidget(self.password_input, alignment=Qt.AlignCenter)
         layout.addWidget(login_button, alignment=Qt.AlignCenter)
+        layout.addWidget(register_button, alignment=Qt.AlignCenter)
 
         layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         self.setLayout(layout)
+        
 
     def login_func(self):
         username = self.username_input.text()
@@ -69,3 +76,8 @@ class LoginWindow(QWidget):
                 return
 
         QMessageBox.warning(self, "Login Failed", "Username or password is incorrect.")
+
+    def open_register_window(self):
+        self.register_window = RegisterWindow()
+        self.register_window.show()
+        self.close()

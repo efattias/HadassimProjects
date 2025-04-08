@@ -12,8 +12,9 @@ class ProductController:
             return f"ERROR: {e}"
         
     @staticmethod
-    def postProduct(newProduct):
+    def postProduct(product):
         try:
+            newProduct = product.to_json()
             response = requests.post(ProductController.API_URL, json=newProduct, verify=False)
             response.raise_for_status()
             print(f"Product added successfully: {response.json()}")

@@ -24,18 +24,14 @@ class ProductModel:
             minimum_quantity=jsonData.get('minimumQuantity'),
             in_stock=jsonData.get('inStock'),
             supplier_id=jsonData.get('supplierId'),
-            supplier=jsonData.get('supplier'),  
-            order_items=jsonData.get('orderItems', []),  
         )
     
     def to_json(self) -> Dict[str, Any]:
         return {
             'id': self.id,
-            'productName': self.product_name,
-            'pricePerItem': self.price_per_item,
-            'minimumQuantity': self.minimum_quantity,
-            'inStock': self.in_stock,
-            'supplierId': self.supplier_id,
-            'supplier': self.supplier,  
-            'orderItems': self.order_items,  
+            'productName': self.product_name, 
+            'pricePerItem': self.price_per_item,  
+            'minimumQuantity': self.minimum_quantity,  
+            'inStock': self.in_stock,  
+            'supplierId': self.supplier_id, 
         }
